@@ -193,7 +193,7 @@ class EventList extends StatelessWidget {
             : const Center(
                 child: Text(
                   'No Events Today',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.grey),
                 ),
               );
       },

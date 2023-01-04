@@ -199,7 +199,7 @@ class TaskList extends StatelessWidget {
             : const Center(
                 child: Text(
                   'No Tasks Today',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.grey),
                 ),
               );
       },
