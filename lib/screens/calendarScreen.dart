@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:just_do_it/function/db_event_function.dart';
 import 'package:just_do_it/function/db_function.dart';
 import 'package:just_do_it/model/data_model.dart';
 import 'package:just_do_it/screens/EventView.dart';
@@ -186,7 +187,7 @@ class CalendarScreenState extends State<CalendarScreen> {
 
   Widget expandedEvent() {
     return ValueListenableBuilder(
-      valueListenable: taskNotifier,
+      valueListenable: eventNotifier,
       builder: (BuildContext context, dynamic value, Widget? child) {
         return ListView.builder(
             itemCount: eventList.length,
@@ -202,29 +203,63 @@ class CalendarScreenState extends State<CalendarScreen> {
                           right: 13.0, left: 13.0, bottom: 10.0),
                       child: Container(
                         decoration: MyBoxDecoration(),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.only(
-                            left: 20,
-                            top: 15,
+                        child: Slidable(
+                          startActionPane: ActionPane(
+                            motion: BehindMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  // markDoneT(data, context);
+                                  doneToast();
+                                },
+                                backgroundColor: greenC(),
+                                icon: Icons.check_rounded,
+                                label: 'Done',
+                              ),
+                            ],
                           ),
-                          title: Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0),
-                            child: Text(
-                              eventList[index].title,
-                              style: TextStyle(
-                                  color: White(), fontWeight: FontWeight.bold),
+                          endActionPane: ActionPane(
+                            motion: BehindMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  // if (taskEventKey == 0) {
+                                  deleteTask(eventList[index].id);
+                                  deleteToast();
+                                },
+                                // },
+                                backgroundColor:
+                                    Color.fromARGB(255, 213, 78, 68),
+                                icon: Icons.close_rounded,
+                                label: 'Delete',
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.only(
+                              left: 20,
+                              top: 15,
                             ),
-                          ),
-                          trailing: PriorityAndDate(
-                              eventList[index].priority, eventList[index].date),
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (ctx) => eventView(
-                                    passValue: eventList[index],
-                                    passId: index,
-                                    passDate: eventList[index].date,
-                                    taskEventKey: taskEventKey,
-                                    priority: eventList[index].priority)),
+                            title: Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: Text(
+                                eventList[index].title,
+                                style: TextStyle(
+                                    color: White(),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            trailing: PriorityAndDate(eventList[index].priority,
+                                eventList[index].date),
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (ctx) => eventView(
+                                      passValue: eventList[index],
+                                      passId: index,
+                                      passDate: eventList[index].date,
+                                      taskEventKey: taskEventKey,
+                                      priority: eventList[index].priority)),
+                            ),
                           ),
                         ),
                       ),

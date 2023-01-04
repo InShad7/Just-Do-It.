@@ -138,19 +138,7 @@ class _searchState extends State<search> {
                   element.title.toLowerCase().contains(value))
               .toList();
           break;
-        // case 'pending':
-        //   taskDisplay = taskList
-        //       .where((element) =>
-        //           element.date.isBefore(DateTime.now()) &&
-        //           element.title.toLowerCase().contains(value))
-        //       .toList();
 
-        //   eventDisplay = eventList
-        //       .where((element) =>
-        //           element.date.isBefore(DateTime.now()) &&
-        //           element.title.toLowerCase().contains(value))
-        //       .toList();
-        //   break;
         default:
           // }
           taskDisplay = taskList
@@ -208,23 +196,7 @@ class _searchState extends State<search> {
             });
           },
         ),
-        // FilterChip(
-        //   label: Text('Pending'),
-        //   backgroundColor: Color.fromARGB(255, 74, 74, 81),
-        //   selected: (filter == 'pending') ? true : false,
-        //   onSelected: (bool val) {
-        //     setState(() {
-        //       if (val) {
-        //         filter = 'pending';
 
-        //         _searchTask(_searchController.text, null);
-        //       } else {
-        //         filter = 'wrong';
-        //         _searchTask(_searchController.text, null);
-        //       }
-        //     });
-        //   },
-        // ),
         FilterChip(
           label: Text('Date '),
           backgroundColor: Color.fromARGB(255, 113, 157, 208),

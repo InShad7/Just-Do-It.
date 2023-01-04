@@ -32,20 +32,16 @@ class TaskList extends StatelessWidget {
 
   prior(mypriorityval) {
     if (mypriorityval == true) {
-      return Container(
-        child: const Icon(
-          Icons.circle,
-          color: Colors.red,
-          size: 12,
-        ),
+      return const Icon(
+        Icons.circle,
+        color: Colors.red,
+        size: 12,
       );
     } else {
-      return Container(
-        child: const Icon(
-          Icons.circle,
-          color: Colors.amber,
-          size: 12,
-        ),
+      return const Icon(
+        Icons.circle,
+        color: Colors.amber,
+        size: 12,
       );
     }
   }
@@ -133,59 +129,79 @@ class TaskList extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: taskNotifier,
       builder: (BuildContext context, List<Task> taskList, Widget? child) {
-        return Padding(
-            padding: const EdgeInsets.all(13.0),
-            child: ListView.builder(
-                // shrinkWrap: true,
-                // physics: NeverScrollableScrollPhysics(),
-                // itemCount: EventList.length,
-                itemCount: taskList.where((Task) {
-                  return DateTime.parse(Task.date.toString()).day ==
-                          DateTime.now().day &&
-                      DateTime.parse(Task.date.toString()).month ==
-                          DateTime.now().month &&
-                      DateTime.parse(Task.date.toString()).year ==
-                          DateTime.now().year &&
-                      Task.isCompleted == false;
-                }).length,
-                itemBuilder: (context, index) {
-                  final data = taskList.where((Task) {
-                    return DateTime.parse(Task.date.toString()).day ==
-                            DateTime.now().day &&
-                        DateTime.parse(Task.date.toString()).month ==
-                            DateTime.now().month &&
-                        DateTime.parse(Task.date.toString()).year ==
-                            DateTime.now().year &&
-                        Task.isCompleted == false;
-                  }).toList()[index];
+        final data = taskList.where((Task) {
+          return DateTime.parse(Task.date.toString()).day ==
+                  DateTime.now().day &&
+              DateTime.parse(Task.date.toString()).month ==
+                  DateTime.now().month &&
+              DateTime.parse(Task.date.toString()).year ==
+                  DateTime.now().year &&
+              Task.isCompleted == false;
+        }).toList();
+        return data.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.all(13.0),
+                child: ListView.builder(
+                    // shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
+                    // itemCount: EventList.length,
+                    itemCount: taskList.where((Task) {
+                      return DateTime.parse(Task.date.toString()).day ==
+                              DateTime.now().day &&
+                          DateTime.parse(Task.date.toString()).month ==
+                              DateTime.now().month &&
+                          DateTime.parse(Task.date.toString()).year ==
+                              DateTime.now().year &&
+                          Task.isCompleted == false;
+                    }).length,
+                    itemBuilder: (context, index) {
+                      // final data = taskList.where((Task) {
+                      //   return DateTime.parse(Task.date.toString()).day ==
+                      //           DateTime.now().day &&
+                      //       DateTime.parse(Task.date.toString()).month ==
+                      //           DateTime.now().month &&
+                      //       DateTime.parse(Task.date.toString()).year ==
+                      //           DateTime.now().year &&
+                      //       Task.isCompleted == false;
+                      // }).toList()[index];
+                      // print(data.title);
+                      taskList.sort((a, b) => a.date.compareTo(b.date));
+                      upcomingTasks = taskList
+                          .where(
+                              (element) => element.date.isAfter(DateTime.now()))
+                          .toList();
 
-                  taskList.sort((a, b) => a.date.compareTo(b.date));
-                  upcomingTasks = taskList
-                      .where((element) => element.date.isAfter(DateTime.now()))
-                      .toList();
+                      // if (upcomingTasks != null) {
+                      for (int i = 0; i < upcomingTasks.length; i++) {
+                        notifyTime = upcomingTasks[i].date;
+                        notifyData = upcomingTasks[i];
+                      }
 
-                  // if (upcomingTasks != null) {
-                  notifyTime = upcomingTasks[0].date;
-                  notifyData = upcomingTasks[0];
-                  // } else {
-                  //   checkTimeForNotification().exit();
-                  // }
+                      // } else {
+                      //   checkTimeForNotification().exit();
+                      // }
 
-                  // print('this is task time ${notifyData!.date}');
+                      // print('this is task time ${notifyData!.date}');
 
-                  final mydate = data.date;
-                  final myPriority = data.priority;
+                      final mydate = data[index].date;
+                      final myPriority = data[index].priority;
 
-                  return Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Container(
-                      height: 80,
-                      decoration: MyBoxDecoration(),
-                      child: MyListTileView(
-                          index, data, myPriority, mydate, context),
-                    ),
-                  );
-                }));
+                      return Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Container(
+                          height: 80,
+                          decoration: MyBoxDecoration(),
+                          child: MyListTileView(
+                              index, data[index], myPriority, mydate, context),
+                        ),
+                      );
+                    }))
+            : const Center(
+                child: Text(
+                  'No Tasks Today',
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
       },
     );
   }

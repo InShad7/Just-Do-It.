@@ -85,7 +85,7 @@ class NavigationDrawer extends StatelessWidget {
           style: TextStyle(color: White(), fontSize: 22),
         ),
         onTap: () => {}
-        // Share.share("https://github.com/AdilUbaid/DO-",
+        // Share.share(" ",
         //       subject: "Github Repo Of This App"),
         );
   }

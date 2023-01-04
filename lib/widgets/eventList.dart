@@ -6,10 +6,9 @@ import 'package:just_do_it/function/db_event_function.dart';
 import 'package:just_do_it/model/data_model.dart';
 
 import 'package:just_do_it/screens/EventView.dart';
-import 'package:just_do_it/screens/addEvent.dart';
+
 import 'package:just_do_it/utilities/globalFunctions.dart';
-import 'package:just_do_it/widgets/notification.dart';
-import 'package:just_do_it/widgets/pendingEvents.dart';
+
 import 'package:just_do_it/widgets/sizedbox.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/main.dart';
@@ -28,20 +27,16 @@ class EventList extends StatelessWidget {
 
   prior(mypriorityval) {
     if (mypriorityval == true) {
-      return Container(
-        child: Icon(
-          Icons.circle,
-          color: Colors.red,
-          size: 12,
-        ),
+      return const Icon(
+        Icons.circle,
+        color: Colors.red,
+        size: 12,
       );
     } else {
-      return Container(
-        child: Icon(
-          Icons.circle,
-          color: Colors.amber,
-          size: 12,
-        ),
+      return const Icon(
+        Icons.circle,
+        color: Colors.amber,
+        size: 12,
       );
     }
   }
@@ -130,58 +125,77 @@ class EventList extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: eventNotifier,
       builder: (BuildContext context, List<Event> EventList, Widget? child) {
-        return Padding(
-            padding: const EdgeInsets.all(13.0),
-            child: ListView.builder(
-                // shrinkWrap: true,
-                // physics: NeverScrollableScrollPhysics(),
-                // itemCount: EventList.length,
-                itemCount: EventList.where((Event) {
-                  return DateTime.parse(Event.date.toString()).day ==
-                          DateTime.now().day &&
-                      DateTime.parse(Event.date.toString()).month ==
-                          DateTime.now().month &&
-                      DateTime.parse(Event.date.toString()).year ==
-                          DateTime.now().year &&
-                      Event.isCompleted == false;
-                }).length,
-                itemBuilder: (context, index) {
-                  final data = EventList.where((Event) {
-                    return DateTime.parse(Event.date.toString()).day ==
-                            DateTime.now().day &&
-                        DateTime.parse(Event.date.toString()).month ==
-                            DateTime.now().month &&
-                        DateTime.parse(Event.date.toString()).year ==
-                            DateTime.now().year &&
-                        Event.isCompleted == false;
-                  }).toList()[index];
+        final data = EventList.where((Event) {
+          return DateTime.parse(Event.date.toString()).day ==
+                  DateTime.now().day &&
+              DateTime.parse(Event.date.toString()).month ==
+                  DateTime.now().month &&
+              DateTime.parse(Event.date.toString()).year ==
+                  DateTime.now().year &&
+              Event.isCompleted == false;
+        }).toList();
+        return data.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.all(13.0),
+                child: ListView.builder(
+                    // shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
+                    // itemCount: EventList.length,
+                    itemCount: EventList.where((Event) {
+                      return DateTime.parse(Event.date.toString()).day ==
+                              DateTime.now().day &&
+                          DateTime.parse(Event.date.toString()).month ==
+                              DateTime.now().month &&
+                          DateTime.parse(Event.date.toString()).year ==
+                              DateTime.now().year &&
+                          Event.isCompleted == false;
+                    }).length,
+                    itemBuilder: (context, index) {
+                      // final data = EventList.where((Event) {
+                      //   return DateTime.parse(Event.date.toString()).day ==
+                      //           DateTime.now().day &&
+                      //       DateTime.parse(Event.date.toString()).month ==
+                      //           DateTime.now().month &&
+                      //       DateTime.parse(Event.date.toString()).year ==
+                      //           DateTime.now().year &&
+                      //       Event.isCompleted == false;
+                      // }).toList()[index];
 
-                  EventList.sort((a, b) => a.date.compareTo(b.date));
-                  upcomingEvents = EventList.where(
-                          (element) => element.date.isAfter(DateTime.now()))
-                      .toList();
-                  // if (upcomingEvents != null) {
-                 notifyTime = upcomingEvents[0].date;
-                 notifyDataEvnt = upcomingEvents[0];
-                  // } else {
-                  //   checkTimeNotificationEvent().exit();
-                  // }
+                      EventList.sort((a, b) => a.date.compareTo(b.date));
+                      upcomingEvents = EventList.where(
+                              (element) => element.date.isAfter(DateTime.now()))
+                          .toList();
+                      // if (upcomingEvents != null) {
+                      for (int i = 0; i < upcomingEvents.length; i++) {
+                        notifyTime = upcomingEvents[i].date;
+                        notifyDataEvnt = upcomingEvents[i];
+                      }
 
-                  // print('this is event time ${notifyDataEvnt!.date}');
+                      // } else {
+                      //   checkTimeNotificationEvent().exit();
+                      // }
 
-                  final mydate = data.date;
-                  final myPriority = data.priority;
+                      // print('this is event time ${notifyDataEvnt!.date}');
 
-                  return Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Container(
-                      height: 80,
-                      decoration: MyBoxDecoration(),
-                      child: MyListTilView(
-                          index, data, myPriority, mydate, context),
-                    ),
-                  );
-                }));
+                      final mydate = data[index].date;
+                      final myPriority = data[index].priority;
+
+                      return Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Container(
+                          height: 80,
+                          decoration: MyBoxDecoration(),
+                          child: MyListTilView(
+                              index, data[index], myPriority, mydate, context),
+                        ),
+                      );
+                    }))
+            : const Center(
+                child: Text(
+                  'No Events Today',
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
       },
     );
   }

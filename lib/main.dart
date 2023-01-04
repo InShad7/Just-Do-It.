@@ -1,11 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-// import 'package:just_do_it/function/db_event_function.dart';
-// import 'package:just_do_it/function/db_function.dart';
+
 
 import 'package:just_do_it/model/data_model.dart';
 
-// import 'package:just_do_it/model/data_model_event.dart';
+
 import 'package:just_do_it/screens/splashScren.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_do_it/widgets/notification.dart';
