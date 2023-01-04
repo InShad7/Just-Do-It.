@@ -1,6 +1,8 @@
 # just_do_it
 
-A new Flutter project.
+Its an app for monitoring daily task and events.
+A todo App.
+Play Store Link:https://play.google.com/store/apps/details?id=in.brototype.just_do_it
 
 ## Getting Started
 
